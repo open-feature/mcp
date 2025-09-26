@@ -1,36 +1,45 @@
 {
-    "name": "@openfeature/mcp",
-    "version": "0.0.1",
-    "license": "Apache-2.0",
-    "type": "module",
-    "scripts": {
-        "build": "npm run build-providers && npm run build-prompts && tsc",
-        "type-check": "tsc --noEmit",
-        "start": "node dist/cli.js",
-        "build-prompts": "node scripts/build-prompts.js",
-        "build-providers": "node scripts/build-providers.js",
-        "prepack": "npm run build",
-        "test": "vitest run"
-    },
-    "bin": {
-        "openfeature-mcp": "dist/cli.js"
-    },
-    "engines": {
-        "node": ">=18.17"
-    },
-    "files": [
-        "dist",
-        "README.md",
-        "LICENSE"
-    ],
-    "dependencies": {
-        "@modelcontextprotocol/sdk": "^1.17.5",
-        "zod": "^3.23.8"
-    },
-    "devDependencies": {
-        "@types/node": "^22.13.10",
-        "typescript": "^5.9.2",
-        "vitest": "^3.2.4"
-    },
-    "packageManager": "npm@11.4.2"
+  "name": "@openfeature/mcp",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build-providers && npm run build-prompts && tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "start": "node dist/cli.js",
+    "build-prompts": "node scripts/build-prompts.js",
+    "build-providers": "node scripts/build-providers.js",
+    "prepack": "npm run build",
+    "test": "vitest run"
+  },
+  "bin": {
+    "openfeature-mcp": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "packageManager": "npm@11.4.2"
 }

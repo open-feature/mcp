@@ -206,9 +206,9 @@ export const PROVIDERS = [
 ${providersArray}
 ] as const;
 
-export type ProviderName = ${hasProviders ? "typeof PROVIDERS[number]" : "string"};
+export type ProviderName = ${hasProviders ? 'typeof PROVIDERS[number]' : 'string'};
 
-export const providerSchema = ${hasProviders ? "z.enum(PROVIDERS)" : "z.string()"};
+export const providerSchema = ${hasProviders ? 'z.enum(PROVIDERS)' : 'z.string()'};
 export const providersSchema = z.array(providerSchema).default([]);
 
 export const PROVIDER_DOCS: Record<ProviderName${hasProviders ? '' : ' | string'}, Partial<Record<InstallTechnology, string>>> = {

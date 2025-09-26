@@ -90,9 +90,9 @@ ${Object.entries(prompts)
   console.log(`   📄 Output: ${path.relative(process.cwd(), OUTPUT_FILE)}`);
   
   if (loadedCount > 0) {
-    console.log(`\n🎉 Prompts bundle created successfully!`);
+    console.log('\n🎉 Prompts bundle created successfully!');
   } else {
-    console.log(`\n⚠️  No prompts were bundled. Make sure prompts exist in the prompts/ directory.`);
+    console.log('\n⚠️  No prompts were bundled. Make sure prompts exist in the prompts/ directory.');
   }
 }
 
