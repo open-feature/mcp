@@ -68,6 +68,8 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
+      - name: Update npm (for OIDC support)
+        run: npm install -g npm@latest
       - name: Install dependencies
         run: npm ci
       - name: Build package
@@ -76,7 +78,6 @@ jobs:
         run: npm run test
       - name: Publish to npm
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
         run: |
           if node -e "process.exit(require('./package.json').private ? 0 : 1)"; then
