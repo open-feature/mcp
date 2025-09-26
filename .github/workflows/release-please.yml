@@ -1,0 +1,93 @@
+on:
+    push:
+        branches:
+            - main
+
+name: Run Release Please
+
+jobs:
+    release-please:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: google-github-actions/release-please-action@v3
+              id: release
+              with:
+                  command: manifest
+                  token: ${{ secrets.RELEASE_PLEASE_ACTION_TOKEN }}
+                  default-branch: main
+                  signoff: "OpenFeature Bot <109696520+openfeaturebot@users.noreply.github.com>"
+        outputs:
+            release_created: ${{ steps.release.outputs.releases_created }}
+            all: ${{ toJSON(steps.release.outputs) }}
+            paths_released: ${{ steps.release.outputs.paths_released }}
+
+    sbom:
+        needs: release-please
+        runs-on: ubuntu-latest
+        if: ${{ fromJSON(needs.release-please.outputs.paths_released)[0] != null }}
+        continue-on-error: true
+        strategy:
+            matrix:
+                release: ${{ fromJSON(needs.release-please.outputs.paths_released) }}
+        env:
+            TAG: ${{ fromJSON(needs.release-please.outputs.all)[format('{0}--tag_name', matrix.release)] }}
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+            - name: Generate SBOM
+              run: |
+                  npm install -g npm@^10.2.0
+                  npm ci
+                  if [ "${{ matrix.release }}" != "" ] && [ "${{ matrix.release }}" != "." ]; then
+                    npm sbom --sbom-format=cyclonedx --omit=dev --omit=peer --workspace="${{ matrix.release }}" > bom.json
+                  else
+                    npm sbom --sbom-format=cyclonedx --omit=dev --omit=peer > bom.json
+                  fi
+            - name: Attach SBOM to artifact
+              env:
+                  GITHUB_TOKEN: ${{ secrets.RELEASE_PLEASE_ACTION_TOKEN }}
+              run: gh release upload $TAG bom.json
+
+    npm-release:
+        needs: release-please
+        runs-on: ubuntu-latest
+        if: ${{ needs.release-please.outputs.release_created }}
+        environment: publish
+        permissions:
+            id-token: write
+            contents: write
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  registry-url: "https://registry.npmjs.org"
+                  cache: "npm"
+            - name: Install dependencies
+              run: npm ci
+            - name: Build package
+              run: npm run build
+            - name: Run tests
+              run: npm run test
+            - name: Publish to npm
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  NPM_CONFIG_PROVENANCE: true
+              run: |
+                  if node -e "process.exit(require('./package.json').private ? 0 : 1)"; then
+                    echo "Package marked as private; skipping publish"
+                    exit 0
+                  fi
+                  PACKAGE_NAME=$(node -p "require('./package.json').name")
+                  VERSION=$(node -p "require('./package.json').version")
+                  if npm view "$PACKAGE_NAME@$VERSION" > /dev/null 2>&1; then
+                    echo "$PACKAGE_NAME@$VERSION already published"
+                  else
+                    npm publish --access public
+                  fi
