@@ -1,23 +1,16 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
-import {
-  providerSchema,
-  PROVIDERS,
-  PROVIDER_DOCS,
-  type ProviderName,
-} from "./generated/providersBundle.generated.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { providerSchema, PROVIDERS, PROVIDER_DOCS, type ProviderName } from './generated/providersBundle.generated.js';
 import {
   InstallTechnologySchema,
   INSTALL_TECHNOLOGIES,
   type InstallTechnology,
-} from "./generated/promptsBundle.generated.js";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { z } from "zod";
+} from './generated/promptsBundle.generated.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 
 export const DISABLE_RESOURCES =
-  process.env.DISABLE_RESOURCES &&
-  (process.env.DISABLE_RESOURCES === "true" ||
-    process.env.DISABLE_RESOURCES === "1");
+  process.env.DISABLE_RESOURCES && (process.env.DISABLE_RESOURCES === 'true' || process.env.DISABLE_RESOURCES === '1');
 
 const TemplateVarsSchema = z.object({
   provider: providerSchema,
@@ -40,30 +33,21 @@ export function registerProviderResources(server: McpServer): void {
   }
 
   // Register a single Resource Template for provider docs: openfeature+doc://{provider}/{language}
-  const template = new ResourceTemplate(
-    "openfeature+doc://{provider}/{language}",
-    {
-      list: undefined,
-      complete: {
-        provider: async (value: string) =>
-          PROVIDERS.filter((p) =>
-            p.toLowerCase().includes((value || "").toLowerCase())
-          ),
-        language: async (value: string) =>
-          INSTALL_TECHNOLOGIES.filter((l) =>
-            l.toLowerCase().includes((value || "").toLowerCase())
-          ),
-      },
-    }
-  );
+  const template = new ResourceTemplate('openfeature+doc://{provider}/{language}', {
+    list: undefined,
+    complete: {
+      provider: async (value: string) => PROVIDERS.filter((p) => p.toLowerCase().includes((value || '').toLowerCase())),
+      language: async (value: string) =>
+        INSTALL_TECHNOLOGIES.filter((l) => l.toLowerCase().includes((value || '').toLowerCase())),
+    },
+  });
 
   server.registerResource(
-    "openfeature_provider_doc",
+    'openfeature_provider_doc',
     template,
     {
-      title: "OpenFeature Provider Docs",
-      description:
-        "Template for OpenFeature provider docs by provider and language.",
+      title: 'OpenFeature Provider Docs',
+      description: 'Template for OpenFeature provider docs by provider and language.',
     },
     async (_uri, variables) => {
       const { provider, language } = TemplateVarsSchema.parse({
@@ -77,7 +61,7 @@ export function registerProviderResources(server: McpServer): void {
           contents: [
             {
               uri: `openfeature+doc://${provider}/${language}`,
-              mimeType: "text/plain",
+              mimeType: 'text/plain',
               text: `No documentation mapping found for provider='${provider}' language='${language}'.`,
             },
           ],
@@ -92,14 +76,14 @@ export function registerProviderResources(server: McpServer): void {
               {
                 uri: href,
                 name: resourceName(provider, language),
-                mimeType: "text/plain",
+                mimeType: 'text/plain',
                 text: `Failed to fetch documentation (${response.status} ${response.statusText}) from ${href}.`,
               },
             ],
           };
         }
         const body = await response.text();
-        const contentType = response.headers.get("content-type") || "text/html";
+        const contentType = response.headers.get('content-type') || 'text/html';
         return {
           contents: [
             {
@@ -115,13 +99,13 @@ export function registerProviderResources(server: McpServer): void {
           contents: [
             {
               uri: href,
-              mimeType: "text/plain",
+              mimeType: 'text/plain',
               text: `Error fetching documentation from ${href}: ${message}`,
             },
           ],
         };
       }
-    }
+    },
   );
 }
 
@@ -132,8 +116,8 @@ export function registerProviderResources(server: McpServer): void {
  */
 export function buildProviderResourceLinks(
   providers: readonly ProviderName[],
-  technology: InstallTechnology
-): CallToolResult["content"] {
+  technology: InstallTechnology,
+): CallToolResult['content'] {
   if (DISABLE_RESOURCES) {
     return [];
   }
@@ -141,7 +125,7 @@ export function buildProviderResourceLinks(
   return providers
     .filter((providerName) => !!PROVIDER_DOCS[providerName]?.[technology])
     .map((providerName) => ({
-      type: "resource_link",
+      type: 'resource_link',
       uri: `openfeature+doc://${providerName}/${technology}`,
       name: resourceName(providerName, technology),
     }));
