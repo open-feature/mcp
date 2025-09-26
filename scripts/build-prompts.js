@@ -3,7 +3,7 @@
 /**
  * Script to bundle prompts into a TypeScript file for Cloudflare Workers
  * This allows us to include prompt content at build time since Workers don't have file system access
- * 
+ *
  * Usage:
  *   node scripts/build-prompts.js
  */
@@ -19,8 +19,8 @@ async function getAvailableTechnologies() {
   try {
     const files = await fs.readdir(PROMPTS_DIR);
     return files
-      .filter(file => file.endsWith('.md') && file !== 'README.md')
-      .map(file => file.replace('.md', ''))
+      .filter((file) => file.endsWith('.md') && file !== 'README.md')
+      .map((file) => file.replace('.md', ''))
       .sort();
   } catch (error) {
     console.warn('⚠️  Could not read prompts directory, using empty list');
@@ -34,7 +34,7 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'src', 'generated', 'promptsBundl
 async function readPromptFile(technology) {
   const fileName = `${technology}.md`;
   const filePath = path.join(PROMPTS_DIR, fileName);
-  
+
   try {
     const content = await fs.readFile(filePath, 'utf-8');
     return content;
@@ -46,11 +46,11 @@ async function readPromptFile(technology) {
 
 async function buildPromptsBundle() {
   console.log('🔨 Building prompts bundle...');
-  
+
   const availableTechnologies = await getAvailableTechnologies();
   const prompts = {};
   let loadedCount = 0;
-  
+
   for (const technology of availableTechnologies) {
     const content = await readPromptFile(technology);
     if (content !== null) {
@@ -59,7 +59,7 @@ async function buildPromptsBundle() {
       console.log(`✅ ${technology}: Bundled`);
     }
   }
-  
+
   // Generate TypeScript file
   const technologyKeys = Object.keys(prompts);
   const tsContent = `// AUTO-GENERATED FILE - Do not edit manually
@@ -68,7 +68,7 @@ async function buildPromptsBundle() {
 import { z } from 'zod';
 
 export const INSTALL_TECHNOLOGIES = [
-${technologyKeys.map(key => `    '${key}',`).join('\n')}
+${technologyKeys.map((key) => `    '${key}',`).join('\n')}
 ] as const;
 
 export const InstallTechnologySchema = z.enum(INSTALL_TECHNOLOGIES);
@@ -83,12 +83,12 @@ ${Object.entries(prompts)
 
   await fs.mkdir(path.dirname(OUTPUT_FILE), { recursive: true });
   await fs.writeFile(OUTPUT_FILE, tsContent, 'utf-8');
-  
+
   console.log('\n📊 Bundle Summary:');
   console.log(`   ✅ Bundled: ${loadedCount}`);
   console.log(`   📁 Available technologies: ${availableTechnologies.length}`);
   console.log(`   📄 Output: ${path.relative(process.cwd(), OUTPUT_FILE)}`);
-  
+
   if (loadedCount > 0) {
     console.log('\n🎉 Prompts bundle created successfully!');
   } else {

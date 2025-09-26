@@ -1,39 +1,32 @@
 {
-    "compilerOptions": {
-        "target": "ES2022",
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "allowJs": true,
-        "checkJs": false,
-        "declaration": true,
-        "declarationMap": true,
-        "emitDeclarationOnly": false,
-        "isolatedModules": true,
-        "verbatimModuleSyntax": false,
-        "strict": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
-        "exactOptionalPropertyTypes": false,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUncheckedIndexedAccess": false,
-        "noImplicitOverride": true,
-        "useUnknownInCatchVariables": true,
-        "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true,
-        "outDir": "./dist",
-        "rootDir": "./src",
-        "types": [
-            "@types/node"
-        ]
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ]
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["@types/node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,12 +1,12 @@
 name: 💡 Feature
 description: Add new functionality to the project.
-title: "[FEATURE] "
+title: '[FEATURE] '
 labels: [enhancement, Needs Triage]
 body:
-- type: textarea
-  attributes:
-    label: Requirements
-    description: |
-      Ask us what you want! Please provide as many details as possible and describe how it should work.
-  validations:
-    required: false
+  - type: textarea
+    attributes:
+      label: Requirements
+      description: |
+        Ask us what you want! Please provide as many details as possible and describe how it should work.
+    validations:
+      required: false

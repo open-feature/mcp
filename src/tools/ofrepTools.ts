@@ -11,21 +11,19 @@ const OFREPArgsSchema = z.object({
     .url()
     .optional()
     .describe(
-      'Base URL of your OFREP-compatible flag service. Must be set directly or via environment variables or config file.'
+      'Base URL of your OFREP-compatible flag service. Must be set directly or via environment variables or config file.',
     ),
   flag_key: z
     .string()
     .optional()
-    .describe(
-      'If provided, calls single flag evaluation, otherwise performs bulk evaluation.'
-    ),
+    .describe('If provided, calls single flag evaluation, otherwise performs bulk evaluation.'),
   context: z
     .object({
       targetingKey: z
         .string()
         .optional()
         .describe(
-          'A string logically identifying the subject of evaluation (end-user, service, etc). Should be set in the majority of cases.'
+          'A string logically identifying the subject of evaluation (end-user, service, etc). Should be set in the majority of cases.',
         ),
     })
     .passthrough()
@@ -61,8 +59,7 @@ async function readConfigFromFile() {
   try {
     const explicitPath = process.env.OPENFEATURE_MCP_CONFIG_PATH;
     const defaultPath = resolve(homedir(), '.openfeature-mcp.json');
-    const path =
-      explicitPath && explicitPath.length > 0 ? explicitPath : defaultPath;
+    const path = explicitPath && explicitPath.length > 0 ? explicitPath : defaultPath;
     const file = await readFile(path, { encoding: 'utf-8' });
 
     const { OFREP } = ConfigFileSchema.parse(JSON.parse(file));
@@ -73,19 +70,14 @@ async function readConfigFromFile() {
 }
 
 async function resolveConfig(args: OFREPArgs) {
-  const envBase =
-    process.env.OPENFEATURE_OFREP_BASE_URL ?? process.env.OFREP_BASE_URL;
-  const envBearer =
-    process.env.OPENFEATURE_OFREP_BEARER_TOKEN ??
-    process.env.OFREP_BEARER_TOKEN;
-  const envApiKey =
-    process.env.OPENFEATURE_OFREP_API_KEY ?? process.env.OFREP_API_KEY;
+  const envBase = process.env.OPENFEATURE_OFREP_BASE_URL ?? process.env.OFREP_BASE_URL;
+  const envBearer = process.env.OPENFEATURE_OFREP_BEARER_TOKEN ?? process.env.OFREP_BEARER_TOKEN;
+  const envApiKey = process.env.OPENFEATURE_OFREP_API_KEY ?? process.env.OFREP_API_KEY;
 
   const fileCfg = await readConfigFromFile();
 
   const baseUrl = args.base_url ?? envBase ?? fileCfg?.baseUrl;
-  const bearerToken =
-    args.auth?.bearer_token ?? envBearer ?? fileCfg?.bearerToken;
+  const bearerToken = args.auth?.bearer_token ?? envBearer ?? fileCfg?.bearerToken;
   const apiKey = args.auth?.api_key ?? envApiKey ?? fileCfg?.apiKey;
 
   return OFREPConfigSchema.parse({ baseUrl, bearerToken, apiKey });
@@ -94,17 +86,11 @@ async function resolveConfig(args: OFREPArgs) {
 /**
  * Calls the OFREP API with the given configuration and arguments.
  */
-async function callOFREPApi(
-  cfg: OFREPConfig,
-  parsed: OFREPArgs
-): Promise<CallToolResult> {
+async function callOFREPApi(cfg: OFREPConfig, parsed: OFREPArgs): Promise<CallToolResult> {
   const base = cfg.baseUrl.replace(/\/$/, '');
-  const isSingleFlagEval =
-    typeof parsed.flag_key === 'string' && parsed.flag_key.length > 0;
+  const isSingleFlagEval = typeof parsed.flag_key === 'string' && parsed.flag_key.length > 0;
   const url = isSingleFlagEval
-    ? `${base}/ofrep/v1/evaluate/flags/${encodeURIComponent(
-        parsed.flag_key as string
-      )}`
+    ? `${base}/ofrep/v1/evaluate/flags/${encodeURIComponent(parsed.flag_key as string)}`
     : `${base}/ofrep/v1/evaluate/flags`;
 
   const headers: Record<string, string> = {
@@ -134,10 +120,7 @@ async function callOFREPApi(
     });
 
     const etag =
-      response.headers.get('ETag') ??
-      response.headers.get('Etag') ??
-      response.headers.get('etag') ??
-      undefined;
+      response.headers.get('ETag') ?? response.headers.get('Etag') ?? response.headers.get('etag') ?? undefined;
 
     console.error(`OFREP API response, status: ${response.status}`);
     if (response.status === 304) {
@@ -173,9 +156,7 @@ async function callOFREPApi(
         error: errorMessage,
       };
       const errorJSON = JSON.stringify(errorData);
-      console.error(
-        `OFREP API error, status: ${response.status}, error: ${errorJSON}`
-      );
+      console.error(`OFREP API error, status: ${response.status}, error: ${errorJSON}`);
       return {
         content: [{ type: 'text', text: errorJSON }],
       };
@@ -201,9 +182,7 @@ async function callOFREPApi(
   }
 }
 
-export function registerOFREPTools(
-  registerToolWithErrorHandling: RegisterToolWithErrorHandling
-): void {
+export function registerOFREPTools(registerToolWithErrorHandling: RegisterToolWithErrorHandling): void {
   registerToolWithErrorHandling(
     'ofrep_flag_eval',
     {
@@ -218,6 +197,6 @@ export function registerOFREPTools(
 
       const cfg = await resolveConfig(parsed);
       return await callOFREPApi(cfg, parsed);
-    }
+    },
   );
 }
