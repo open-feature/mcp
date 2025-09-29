@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/open-feature/mcp/compare/v0.0.9...v0.0.10) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* move id-token permission to root level for OIDC ([4e9ccd3](https://github.com/open-feature/mcp/commit/4e9ccd390e1e3c40c8f183a893c6a8bcba0de93e))
+
 ## [0.0.9](https://github.com/open-feature/mcp/compare/v0.0.8...v0.0.9) (2025-09-29)
 
 
