@@ -41,9 +41,8 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
-        # downloads npm >=11.5.1 per packageManager field for OIDC support
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Update npm to >=11.5.1 (for OIDC support)
+        run: npm install -g npm@^11.5.1
       - name: Install dependencies
         run: npm ci
       - name: Build package
