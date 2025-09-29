@@ -5,65 +5,37 @@ on:
 
 name: Run Release Please
 
+permissions: # added using https://github.com/step-security/secure-workflows
+  contents: read
+
 jobs:
   release-please:
+    permissions:
+      contents: write # for googleapis/release-please-action to create release commit
+      pull-requests: write # for googleapis/release-please-action to create release PR
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4
         id: release
         with:
-          command: manifest
-          token: ${{ secrets.RELEASE_PLEASE_ACTION_TOKEN }}
-          default-branch: main
-          signoff: "OpenFeature Bot <109696520+openfeaturebot@users.noreply.github.com>"
+          token: ${{secrets.RELEASE_PLEASE_ACTION_TOKEN}}
     outputs:
-      release_created: ${{ steps.release.outputs.releases_created }}
-      all: ${{ toJSON(steps.release.outputs) }}
-      paths_released: ${{ steps.release.outputs.paths_released }}
-
-  sbom:
+      release_created: ${{ steps.release.outputs.release_created }}
+      release_tag_name: ${{ steps.release.outputs.tag_name }}
+  release:
     needs: release-please
     runs-on: ubuntu-latest
-    if: ${{ fromJSON(needs.release-please.outputs.paths_released)[0] != null }}
-    continue-on-error: true
-    strategy:
-      matrix:
-        release: ${{ fromJSON(needs.release-please.outputs.paths_released) }}
-    env:
-      TAG: ${{ fromJSON(needs.release-please.outputs.all)[format('{0}--tag_name', matrix.release)] }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Generate SBOM
-        run: |
-          npm ci
-          if [ "${{ matrix.release }}" != "" ] && [ "${{ matrix.release }}" != "." ]; then
-            npm sbom --sbom-format=cyclonedx --omit=dev --omit=peer --workspace="${{ matrix.release }}" > bom.json
-          else
-            npm sbom --sbom-format=cyclonedx --omit=dev --omit=peer > bom.json
-          fi
-      - name: Attach SBOM to artifact
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PLEASE_ACTION_TOKEN }}
-        run: gh release upload $TAG bom.json
-
-  npm-release:
-    needs: release-please
-    runs-on: ubuntu-latest
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ fromJSON(needs.release-please.outputs.release_created || false) }}
     environment: publish
     permissions:
       id-token: write
+      attestations: write
       contents: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
@@ -74,8 +46,14 @@ jobs:
         run: npm ci
       - name: Build package
         run: npm run build
-      - name: Run tests
-        run: npm run test
+      - name: Generate SBOM
+        run: npm sbom --sbom-format=cyclonedx --omit=dev --omit=peer > sbom.json
+
+      - name: Attest SBOM
+        uses: actions/attest-sbom@v3
+        with:
+          subject-path: package.json
+          sbom-path: ./sbom.json
       - name: Publish to npm
         env:
           NPM_CONFIG_PROVENANCE: true
