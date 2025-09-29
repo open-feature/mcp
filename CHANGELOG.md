@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/open-feature/mcp/compare/v0.0.7...v0.0.8) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* clear NODE_AUTH_TOKEN env var to enable pure OIDC authentication ([3579953](https://github.com/open-feature/mcp/commit/35799539171cc9cd88d313823e14c2508d685a4e))
+
 ## [0.0.7](https://github.com/open-feature/mcp/compare/v0.0.6...v0.0.7) (2025-09-29)
 
 
