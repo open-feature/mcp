@@ -76,5 +76,5 @@ jobs:
           if npm view "$PACKAGE_NAME@$VERSION" > /dev/null 2>&1; then
             echo "$PACKAGE_NAME@$VERSION already published"
           else
-            npm publish --access public
+            npm publish --provenance --access public
           fi
