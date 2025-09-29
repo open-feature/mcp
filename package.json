@@ -1,6 +1,6 @@
 {
   "name": "@openfeature/mcp",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "scripts": {
     "build": "npm run build-providers && npm run build-prompts && tsc",
