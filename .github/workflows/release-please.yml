@@ -57,6 +57,13 @@ jobs:
           sbom-path: ./sbom.json
       - name: Publish to npm
         run: |
+          # Log npm version
+          echo "npm version: $(npm -v)"
+
+          # Remove .npmrc to allow npm to use OIDC instead of NODE_AUTH_TOKEN
+          rm -f ~/.npmrc
+          rm -f .npmrc
+
           if node -e "process.exit(require('./package.json').private ? 0 : 1)"; then
             echo "Package marked as private; skipping publish"
             exit 0
