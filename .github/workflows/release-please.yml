@@ -30,6 +30,7 @@ jobs:
     if: ${{ fromJSON(needs.release-please.outputs.release_created || 'false') }}
     environment: publish
     permissions:
+      id-token: write
       attestations: write
       contents: write
     steps:
