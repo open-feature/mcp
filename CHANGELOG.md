@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/open-feature/mcp/compare/v0.0.10...v0.0.11) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* add id-token permission to npm-release job ([a7ce285](https://github.com/open-feature/mcp/commit/a7ce285dc8d343af0ba0fac0109c166fb01a89f9))
+
 ## [0.0.10](https://github.com/open-feature/mcp/compare/v0.0.9...v0.0.10) (2025-09-29)
 
 
