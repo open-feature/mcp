@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/open-feature/mcp/compare/v0.0.6...v0.0.7) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* remove .npmrc before publish to enable OIDC authentication ([1fa1d56](https://github.com/open-feature/mcp/commit/1fa1d560aef70adfaf224eb73d15c5a69a72a199))
+
 ## [0.0.6](https://github.com/open-feature/mcp/compare/v0.0.5...v0.0.6) (2025-09-29)
 
 
