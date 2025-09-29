@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/open-feature/mcp/compare/v0.0.2...v0.0.3) (2025-09-29)
+
+
+### 🧹 Chore
+
+* remove private from package.json ([#17](https://github.com/open-feature/mcp/issues/17)) ([5493cf3](https://github.com/open-feature/mcp/commit/5493cf3010e2e54198b5f14f4274883b32e94caf))
+
 ## [0.0.2](https://github.com/open-feature/mcp/compare/v0.0.1...v0.0.2) (2025-09-29)
 
 
