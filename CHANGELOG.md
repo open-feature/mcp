@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/open-feature/mcp/compare/v0.0.5...v0.0.6) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* add registry-url back for npm OIDC authentication ([ef846d7](https://github.com/open-feature/mcp/commit/ef846d7be2973851e91761a31b1c12d7914e0545))
+
 ## [0.0.5](https://github.com/open-feature/mcp/compare/v0.0.4...v0.0.5) (2025-09-29)
 
 
