@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/open-feature/mcp/compare/v0.0.4...v0.0.5) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* remove registry-url from setup-node to enable pure OIDC auth ([04e7a0c](https://github.com/open-feature/mcp/commit/04e7a0c186ce1c5d776d5e4e6ed8d44f1fd3b3eb))
+
 ## [0.0.4](https://github.com/open-feature/mcp/compare/v0.0.3...v0.0.4) (2025-09-29)
 
 
