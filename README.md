@@ -1,4 +1,4 @@
-# OpenFeature MCP Local Server (stdio)
+# OpenFeature MCP
 
 ## Warning
 
