@@ -56,11 +56,14 @@ jobs:
           subject-path: package.json
           sbom-path: ./sbom.json
       - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ""
+          NPM_CONFIG_USERCONFIG: ""
         run: |
           # Log npm version
           echo "npm version: $(npm -v)"
 
-          # Remove .npmrc to allow npm to use OIDC instead of NODE_AUTH_TOKEN
+          # Remove .npmrc files to allow npm to use OIDC instead of NODE_AUTH_TOKEN
           rm -f ~/.npmrc
           rm -f .npmrc
 
