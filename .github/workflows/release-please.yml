@@ -1,0 +1,72 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Run Release Please
+
+permissions: # added using https://github.com/step-security/secure-workflows
+  contents: read
+
+jobs:
+  release-please:
+    permissions:
+      contents: write # for googleapis/release-please-action to create release commit
+      pull-requests: write # for googleapis/release-please-action to create release PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4
+        id: release
+        with:
+          token: ${{secrets.RELEASE_PLEASE_ACTION_TOKEN}}
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      release_tag_name: ${{ steps.release.outputs.tag_name }}
+
+  npm-release:
+    needs: release-please
+    runs-on: ubuntu-latest
+    if: ${{ fromJSON(needs.release-please.outputs.release_created || 'false') }}
+    environment: publish
+    permissions:
+      id-token: write
+      attestations: write
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+      - name: Update npm to >=11.5.1 (for OIDC support)
+        run: npm install -g npm@^11.5.1
+      - name: Install dependencies
+        run: npm ci
+      - name: Build package
+        run: npm run build
+      - name: Generate SBOM
+        run: npm sbom --sbom-format=cyclonedx --omit=dev --omit=peer > sbom.json
+
+      - name: Attest SBOM
+        uses: actions/attest-sbom@v3
+        with:
+          subject-path: package.json
+          sbom-path: ./sbom.json
+      - name: Publish to npm
+        env:
+          NPM_CONFIG_PROVENANCE: true
+        run: |
+          if node -e "process.exit(require('./package.json').private ? 0 : 1)"; then
+            echo "Package marked as private; skipping publish"
+            exit 0
+          fi
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$PACKAGE_NAME@$VERSION" > /dev/null 2>&1; then
+            echo "$PACKAGE_NAME@$VERSION already published"
+          else
+            npm publish --access public
+          fi
