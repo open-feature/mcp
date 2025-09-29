@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/open-feature/mcp/compare/v0.0.8...v0.0.9) (2025-09-29)
+
+
+### 🐛 Bug Fixes
+
+* add --provenance flag to trigger OIDC authentication ([3df639b](https://github.com/open-feature/mcp/commit/3df639bd81fb3271d928719038641bcf2b132a21))
+
 ## [0.0.8](https://github.com/open-feature/mcp/compare/v0.0.7...v0.0.8) (2025-09-29)
 
 
