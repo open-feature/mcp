@@ -22,7 +22,8 @@ jobs:
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       release_tag_name: ${{ steps.release.outputs.tag_name }}
-  release:
+
+  npm-release:
     needs: release-please
     runs-on: ubuntu-latest
     if: ${{ fromJSON(needs.release-please.outputs.release_created || false) }}
@@ -40,8 +41,9 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
-      - name: Update npm (for OIDC support)
-        run: npm install -g npm@latest
+        # downloads npm >=11.5.1 per packageManager field for OIDC support
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies
         run: npm ci
       - name: Build package
