@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/open-feature/mcp/compare/v0.0.3...v0.0.4) (2025-09-29)
+
+
+### 🧹 Chore
+
+* cleanup README title ([9a11a0e](https://github.com/open-feature/mcp/commit/9a11a0e22cef58c9d08d18d4983818fb42a54dc3))
+
 ## [0.0.3](https://github.com/open-feature/mcp/compare/v0.0.2...v0.0.3) (2025-09-29)
 
 
