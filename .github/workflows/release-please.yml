@@ -63,15 +63,7 @@ jobs:
           sbom-path: ./sbom.json
 
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ""
-          NPM_AUTH_TOKEN: ""
-          NPM_TOKEN: ""
         run: |
-          unset NODE_AUTH_TOKEN NPM_AUTH_TOKEN NPM_TOKEN
-          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
-            rm "$NPM_CONFIG_USERCONFIG"
-          fi
           if node -e "process.exit(require('./package.json').private ? 0 : 1)"; then
             echo "Package marked as private; skipping publish"
             exit 0
