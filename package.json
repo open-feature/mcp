@@ -1,11 +1,10 @@
 {
   "name": "@openfeature/mcp",
-<<<<<<< HEAD
-"version": "0.0.12",
-"repository": {
-  "type": "git",
-  "url": "https://github.com/open-feature/mcp"
-},
+  "version": "0.0.12",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-feature/mcp"
+  },
   "type": "module",
   "scripts": {
     "build": "npm run build-providers && npm run build-prompts && tsc",
