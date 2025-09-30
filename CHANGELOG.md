@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.12](https://github.com/open-feature/mcp/compare/v0.0.11...v0.0.12) (2025-09-30)
+
+
+### 🧹 Chore
+
+* clear npm tokens for oidc ([1808839](https://github.com/open-feature/mcp/commit/18088397d0b59bf64cb8fb68bf0bf85e33caf1b0))
+
 ## [0.0.11](https://github.com/open-feature/mcp/compare/v0.0.10...v0.0.11) (2025-09-29)
 
 
