@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.13](https://github.com/open-feature/mcp/compare/v0.0.12...v0.0.13) (2025-09-30)
+
+
+### 🧹 Chore
+
+* add repository metadata ([644c7be](https://github.com/open-feature/mcp/commit/644c7be046a1a7b005a4f8bb80c5be9022046343))
+* restore repository metadata ([72446d4](https://github.com/open-feature/mcp/commit/72446d4ba2936c40e4ea899ad1199679f998e91a))
+
 ## [0.0.12](https://github.com/open-feature/mcp/compare/v0.0.11...v0.0.12) (2025-09-30)
 
 
