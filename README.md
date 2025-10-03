@@ -13,6 +13,8 @@ installation guidance and Open Feature Remote Evaluation Protocol (OFREP) over s
   OpenFeature SDKs
 - **MCP stdio Transport**: Intended for local usage by MCP-compatible clients
 
+This server is published to the [MCP Registry](https://registry.modelcontextprotocol.io) under `dev.openfeature/mcp`.
+
 ## Configure your AI client (local)
 
 ### Cursor
