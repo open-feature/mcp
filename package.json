@@ -1,6 +1,7 @@
 {
   "name": "@openfeature/mcp",
   "version": "0.0.13",
+  "mcpName": "dev.openfeature/mcp",
   "repository": {
     "type": "git",
     "url": "https://github.com/open-feature/mcp"

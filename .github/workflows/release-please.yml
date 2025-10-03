@@ -75,3 +75,25 @@ jobs:
           else
             npm publish --provenance --access public
           fi
+
+  mcp-registry-publish:
+    needs: [release-please, npm-release]
+    runs-on: ubuntu-latest
+    if: ${{ fromJSON(needs.release-please.outputs.release_created || 'false') }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+        # See docs here: https://raw.githubusercontent.com/modelcontextprotocol/registry/refs/heads/main/docs/guides/publishing/github-actions.md
+      - name: Install MCP Publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/download/v1.1.0/mcp-publisher_1.1.0_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+      - name: Login to MCP Registry
+        run: ./mcp-publisher login dns --domain openfeature.dev --private-key "${{ secrets.MCP_REGISTRY_KEY }}"
+
+      - name: Publish to MCP Registry
+        run: ./mcp-publisher publish
