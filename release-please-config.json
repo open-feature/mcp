@@ -9,7 +9,16 @@
       "bump-patch-for-minor-pre-major": true,
       "extra-files": [
         "README.md",
-        "server.json"
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.packages[0].version"
+        }
       ]
     }
   },
