@@ -145,9 +145,7 @@ Restart Claude Desktop after saving.
 
 The OpenFeature MCP Server provides two main tools accessible to AI assistants:
 
-### SDK Installation Guide
-
-**Tool Name**: `install_openfeature_sdk`
+### SDK Installation Guide: `install_openfeature_sdk`
 
 Fetches installation instructions for OpenFeature SDKs in various languages and frameworks. Optionally includes provider-specific setup documentation.
 
@@ -183,9 +181,7 @@ The provider list is automatically sourced from the OpenFeature ecosystem (`open
 
 See `scripts/build-providers.js` for details on how the provider list is maintained.
 
-### OFREP Flag Evaluation
-
-**Tool Name**: `ofrep_flag_eval`
+### OFREP Flag Evaluation: `ofrep_flag_eval`
 
 Evaluate feature flags using the OpenFeature Remote Evaluation Protocol (OFREP).
 Supports both single flag and bulk evaluation.
