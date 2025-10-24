@@ -19,8 +19,8 @@
 The **OpenFeature Model Context Protocol (MCP) Server** enables AI coding assistants to interact with OpenFeature through a standardized protocol.
 It provides SDK installation guidance and feature flag evaluation capabilities directly within your AI-powered development environment.
 
-The OpenFeature MCP Server is a local tool that connects AI coding assistants (like Cursor, Claude Code, VS Code, and Windsurf) to OpenFeature functionality.
-It acts as a bridge between your AI assistant and OpenFeature capabilities, enabling intelligent code generation, SDK installation guidance, and feature flag evaluation—all through natural language interactions.
+The OpenFeature MCP Server is a local tool that connects AI coding assistants (like **Cursor**, **Claude Code**, **VS Code**, and **Windsurf**) to OpenFeature functionality.
+It acts as a bridge between your AI assistant and OpenFeature capabilities, enabling intelligent code generation and migration, SDK installation guidance, and feature flag evaluation.
 
 This server is published to the [MCP Registry](https://registry.modelcontextprotocol.io) under `dev.openfeature/mcp`.
 
@@ -79,7 +79,7 @@ Add to `~/.cursor/mcp_settings.json`:
 }
 ```
 
-#### VS Code (Continue)
+### VS Code
 
 Add to `.continue/config.json`:
 
@@ -94,9 +94,9 @@ Add to `.continue/config.json`:
 }
 ```
 
-#### Claude Code (CLI)
+### Claude Code
 
-Add the server via CLI:
+Add the server via the Claude Code CLI:
 
 ```bash
 claude mcp add --transport stdio openfeature npx -y @openfeature/mcp
@@ -104,7 +104,7 @@ claude mcp add --transport stdio openfeature npx -y @openfeature/mcp
 
 Then manage the connection with `/mcp` in the CLI.
 
-#### Windsurf
+### Windsurf
 
 In the `Manage MCP servers` raw config, add:
 
@@ -119,7 +119,7 @@ In the `Manage MCP servers` raw config, add:
 }
 ```
 
-#### Claude Desktop
+### Claude Desktop
 
 Edit your Claude Desktop config at:
 
@@ -141,38 +141,11 @@ Add the following configuration:
 
 Restart Claude Desktop after saving.
 
-### OFREP Configuration
-
-To use OFREP flag evaluation features, configure authentication and endpoint details. The server checks configuration in this priority order:
-
-1. **Environment Variables**
-   - `OPENFEATURE_OFREP_BASE_URL` or `OFREP_BASE_URL`
-   - `OPENFEATURE_OFREP_BEARER_TOKEN` or `OFREP_BEARER_TOKEN`
-   - `OPENFEATURE_OFREP_API_KEY` or `OFREP_API_KEY`
-
-2. **Configuration File**: `~/.openfeature-mcp.json`
-
-Example `~/.openfeature-mcp.json`:
-
-```json
-{
-  "OFREP": {
-    "baseUrl": "https://flags.example.com",
-    "bearerToken": "<your-token>",
-    "apiKey": "<your-api-key>"
-  }
-}
-```
-
-You can override the config file path using the `OPENFEATURE_MCP_CONFIG_PATH` environment variable.
-
-> **Note**: All logs are written to stderr. The MCP protocol messages use stdout.
-
 ## Available Tools
 
 The OpenFeature MCP Server provides two main tools accessible to AI assistants:
 
-### 1. SDK Installation Guide
+### SDK Installation Guide
 
 **Tool Name**: `install_openfeature_sdk`
 
@@ -208,7 +181,7 @@ The provider list is automatically sourced from the OpenFeature ecosystem (`open
 
 See `scripts/build-providers.js` for details on how the provider list is maintained.
 
-### 2. OFREP Flag Evaluation
+### OFREP Flag Evaluation
 
 **Tool Name**: `ofrep_flag_eval`
 
@@ -227,21 +200,46 @@ Supports both single flag and bulk evaluation.
 | `auth.bearer_token` | string | No | Bearer token for authorization |
 | `auth.api_key` | string | No | API key for authorization |
 
+#### OFREP Configuration
+
+To use OFREP flag evaluation features, configure authentication and endpoint details. The server checks configuration in this priority order:
+
+1. **Environment Variables**
+   - `OPENFEATURE_OFREP_BASE_URL` or `OFREP_BASE_URL`
+   - `OPENFEATURE_OFREP_BEARER_TOKEN` or `OFREP_BEARER_TOKEN`
+   - `OPENFEATURE_OFREP_API_KEY` or `OFREP_API_KEY`
+
+2. **Configuration File**: `~/.openfeature-mcp.json`
+
+Example `~/.openfeature-mcp.json`:
+
+```json
+{
+  "OFREP": {
+    "baseUrl": "https://flags.example.com",
+    "bearerToken": "<your-token>",
+    "apiKey": "<your-api-key>"
+  }
+}
+```
+
+You can override the config file path using the `OPENFEATURE_MCP_CONFIG_PATH` environment variable.
+
+> **Note**: All logs are written to stderr. The MCP protocol messages use stdout.
+
 ## MCP Usage Examples
 
 ### SDK Installation Example
 
-When interacting with your AI assistant:
+> "install the OpenFeature SDK for Node.js with the flagd provider"
 
-> "How do I install the OpenFeature SDK for Node.js with the flagd provider?"
-
-The AI will use the MCP to fetch relevant installation instructions and provide you with step-by-step guidance.
+The AI will use the MCP to fetch relevant installation instructions and attempt to install the OpenFeature SDK with the correct provider.
 
 ### Flag Evaluation Example
 
 When interacting with your AI assistant:
 
-> "Can you check the value of the 'new-checkout-flow' feature flag for user-123?"
+> "Can you check the value of the 'new-checkout-flow' feature flag for 'user-123'?"
 
 The AI will use the MCP to evaluate the flag using OFREP and provide you with the result, along with additional metadata like variant and reason.
 
