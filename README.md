@@ -11,9 +11,9 @@
 
 [OpenFeature](https://openfeature.dev) is an open specification that provides a vendor-agnostic, community-driven API for feature flagging that works with your favorite feature flag management tool or in-house solution.
 
-> **⚠️ Active Development**: This project is in active development. Features and APIs may change.
-
 ## Overview
+
+> **⚠️ Active Development**: This project is in active development. Features and APIs may change.
 <!-- x-hide-in-docs-end -->
 
 The **OpenFeature Model Context Protocol (MCP) Server** enables AI coding assistants to interact with OpenFeature through a standardized protocol.
