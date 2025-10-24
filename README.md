@@ -162,18 +162,20 @@ Fetches installation instructions for OpenFeature SDKs in various languages and 
 
 The technologies list is built from the available `prompts/*.md`, updated automatically using `scripts/build-prompts.js`
 
-- `android` - Android Kotlin SDK
-- `dotnet` - .NET SDK
-- `go` - Go SDK
-- `ios` - iOS Swift SDK
-- `java` - Java SDK
-- `javascript` - JavaScript Web SDK
-- `nestjs` - NestJS SDK
-- `nodejs` - Node.js SDK
-- `php` - PHP SDK
-- `python` - Python SDK
-- `react` - React SDK
-- `ruby` - Ruby SDK
+| Technology | SDK |
+|------------|-----|
+| `android` | Android Kotlin SDK |
+| `dotnet` | .NET SDK |
+| `go` | Go SDK |
+| `ios` | iOS Swift SDK |
+| `java` | Java SDK |
+| `javascript` | JavaScript Web SDK |
+| `nestjs` | NestJS SDK |
+| `nodejs` | Node.js SDK |
+| `php` | PHP SDK |
+| `python` | Python SDK |
+| `react` | React SDK |
+| `ruby` | Ruby SDK |
 
 #### Supported Providers
 
@@ -185,7 +187,7 @@ See `scripts/build-providers.js` for details on how the provider list is maintai
 
 **Tool Name**: `ofrep_flag_eval`
 
-Evaluate feature flags using the OpenFeature Remote Evaluation Protocol (OFREP). 
+Evaluate feature flags using the OpenFeature Remote Evaluation Protocol (OFREP).
 Supports both single flag and bulk evaluation.
 
 #### OFREP Tool Parameters
