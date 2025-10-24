@@ -241,6 +241,7 @@ When interacting with your AI assistant:
 
 The AI will use the MCP to evaluate the flag using OFREP and provide you with the result, along with additional metadata like variant and reason.
 
+<!-- x-hide-in-docs-start -->
 ## Resources
 
 - **NPM Package**: [@openfeature/mcp](https://www.npmjs.com/package/@openfeature/mcp)
@@ -258,3 +259,4 @@ The OpenFeature MCP Server is an open-source project maintained by the OpenFeatu
 - **Improve Documentation**: Help us improve SDK installation guides and examples
 
 Join the [CNCF Slack](https://communityinviter.com/apps/cloud-native/cncf) to get involved.
+<!-- x-hide-in-docs-end -->
