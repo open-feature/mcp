@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.14](https://github.com/open-feature/mcp/compare/v0.0.13...v0.0.14) (2025-10-06)
+
+
+### ✨ New Features
+
+* add MCP registry publishing via DNS authentication ([#29](https://github.com/open-feature/mcp/issues/29)) ([784e8cb](https://github.com/open-feature/mcp/commit/784e8cb5254c7e47da385b853f813fe36a858c79))
+
 ## [0.0.13](https://github.com/open-feature/mcp/compare/v0.0.12...v0.0.13) (2025-09-30)
 
 

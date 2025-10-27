@@ -2,12 +2,12 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "dev.openfeature/mcp",
   "description": "MCP server providing OpenFeature SDK installation guides and OFREP flag evaluation",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@openfeature/mcp",
-      "version": "0.0.13",
+      "version": "0.0.14",
       "transport": {
         "type": "stdio"
       }
