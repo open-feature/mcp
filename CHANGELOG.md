@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.16](https://github.com/open-feature/mcp/compare/v0.0.15...v0.0.16) (2025-10-27)
+
+
+### 🧹 Chore
+
+* update MCP Publisher version and schema format ([#34](https://github.com/open-feature/mcp/issues/34)) ([a5f448c](https://github.com/open-feature/mcp/commit/a5f448c939384288be294ee3bfb41e28824c91f3))
+
 ## [0.0.15](https://github.com/open-feature/mcp/compare/v0.0.14...v0.0.15) (2025-10-27)
 
 
