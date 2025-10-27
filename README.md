@@ -65,7 +65,7 @@ Then configure your AI assistant to use the global installation:
 
 ### Cursor
 
-<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=OpenFeature&config=eyJjb21tYW5kIjogIm5weCIsICJhcmdzIjogWyIteSIsICJAb3BlbmZlYXR1cmUvbWNwIl19Cg==" className="mcp-install-button" target="_blank" rel="noopener noreferrer">📦 Install in Cursor</a>
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=OpenFeature&config=eyJjb21tYW5kIjogIm5weCIsICJhcmdzIjogWyIteSIsICJAb3BlbmZlYXR1cmUvbWNwIl19Cg==" class="mcp-install-button" target="_blank" rel="noopener noreferrer">📦 Install in Cursor</a>
 
 To open Cursor and automatically add the OpenFeature MCP, click the install button above.
 
@@ -84,7 +84,7 @@ Alternatively, navigate to `Cursor Settings` -> `Tools & MCP` -> `New MCP Server
 
 ### VS Code
 
-<a href="https://vscode.dev/redirect/mcp/install?name=OpenFeature&config=%7B%22command%22%3A%20%22npx%22%2C%20%22args%22%3A%20%5B%22-y%22%2C%20%22%40openfeature%2Fmcp%22%5D%7D" className="mcp-install-button" target="_blank" rel="noopener noreferrer">📦 Install in VS Code</a>
+<a href="https://vscode.dev/redirect/mcp/install?name=OpenFeature&config=%7B%22command%22%3A%20%22npx%22%2C%20%22args%22%3A%20%5B%22-y%22%2C%20%22%40openfeature%2Fmcp%22%5D%7D" class="mcp-install-button" target="_blank" rel="noopener noreferrer">📦 Install in VS Code</a>
 
 To open VS Code and automatically add the OpenFeature MCP, click the install button above.
 
