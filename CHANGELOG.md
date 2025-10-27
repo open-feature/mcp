@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.15](https://github.com/open-feature/mcp/compare/v0.0.14...v0.0.15) (2025-10-27)
+
+
+### 🧹 Chore
+
+* add publish environment to mcp-registry-publish workflow ([#32](https://github.com/open-feature/mcp/issues/32)) ([f667a63](https://github.com/open-feature/mcp/commit/f667a633cbf87a7063b086e3fddff0e3f9c6a4f5))
+
+
+### 📚 Documentation
+
+* improve README and add CONTRIBUTING guide ([#31](https://github.com/open-feature/mcp/issues/31)) ([425568e](https://github.com/open-feature/mcp/commit/425568eb56efb2efde3f6b1f5c75d2a102e56e9c))
+
 ## [0.0.14](https://github.com/open-feature/mcp/compare/v0.0.13...v0.0.14) (2025-10-06)
 
 
