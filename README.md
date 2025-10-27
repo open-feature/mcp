@@ -1,24 +1,71 @@
-# OpenFeature MCP
+<!-- markdownlint-disable MD033 -->
+<!-- x-hide-in-docs-start -->
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/open-feature/community/0e23508c163a6a1ac8c0ced3e4bd78faafe627c7/assets/logo/horizontal/white/openfeature-horizontal-white.svg" />
+    <img align="center" alt="OpenFeature Logo" src="https://raw.githubusercontent.com/open-feature/community/0e23508c163a6a1ac8c0ced3e4bd78faafe627c7/assets/logo/horizontal/black/openfeature-horizontal-black.svg" />
+  </picture>
+</p>
 
-## Warning
+<h2 align="center">OpenFeature MCP</h2>
 
-**This project is in active development.**
+[OpenFeature](https://openfeature.dev) is an open specification that provides a vendor-agnostic, community-driven API for feature flagging that works with your favorite feature flag management tool or in-house solution.
 
-## Features
+## Overview
 
-A local Model Context Protocol (MCP) server that provides OpenFeature SDK
-installation guidance and Open Feature Remote Evaluation Protocol (OFREP) over stdio.
+> **⚠️ Active Development**: This project is in active development. Features and APIs may change.
+<!-- x-hide-in-docs-end -->
 
-- **OpenFeature SDK Installation Guides**: Fetch installation prompts for various
-  OpenFeature SDKs
-- **MCP stdio Transport**: Intended for local usage by MCP-compatible clients
+The **OpenFeature Model Context Protocol (MCP) Server** enables AI coding assistants to interact with OpenFeature through a standardized protocol.
+It provides SDK installation guidance and feature flag evaluation capabilities directly within your AI-powered development environment.
+
+The OpenFeature MCP Server is a local tool that connects AI coding assistants (like **Cursor**, **Claude Code**, **VS Code**, and **Windsurf**) to OpenFeature functionality.
+It acts as a bridge between your AI assistant and OpenFeature capabilities, enabling intelligent code generation and migration, SDK installation guidance, and feature flag evaluation.
 
 This server is published to the [MCP Registry](https://registry.modelcontextprotocol.io) under `dev.openfeature/mcp`.
 
-## Configure your AI client (local)
+## Quick Start
+
+### NPX Install
+
+The easiest way to use the OpenFeature MCP Server is through NPX, which requires no installation:
+
+```json
+{
+  "mcpServers": {
+    "OpenFeature": {
+      "command": "npx",
+      "args": ["-y", "@openfeature/mcp"]
+    }
+  }
+}
+```
+
+### NPM Global Install
+
+You can install the MCP server globally:
+
+```bash
+npm install -g @openfeature/mcp
+```
+
+Then configure your AI assistant to use the global installation:
+
+```json
+{
+  "mcpServers": {
+    "OpenFeature": {
+      "command": "openfeature-mcp"
+    }
+  }
+}
+```
+
+## AI Assistant Configuration
 
 ### Cursor
 
+Navigate to `Cursor Settings` -> `Tools & MCP` -> `New MCP Server`.
 Add to `~/.cursor/mcp_settings.json`:
 
 ```json
@@ -32,7 +79,7 @@ Add to `~/.cursor/mcp_settings.json`:
 }
 ```
 
-### VS Code (Continue)
+### VS Code
 
 Add to `.continue/config.json`:
 
@@ -47,19 +94,19 @@ Add to `.continue/config.json`:
 }
 ```
 
-### Claude Code (CLI)
+### Claude Code
 
-Add the server via CLI:
+Add the server via the Claude Code CLI:
 
 ```bash
 claude mcp add --transport stdio openfeature npx -y @openfeature/mcp
 ```
 
-Then manage the connection in the CLI with `/mcp`.
+Then manage the connection with `/mcp` in the CLI.
 
 ### Windsurf
 
-In the "Manage MCP servers" raw config, add:
+In the `Manage MCP servers` raw config, add:
 
 ```json
 {
@@ -74,7 +121,12 @@ In the "Manage MCP servers" raw config, add:
 
 ### Claude Desktop
 
-Edit your Claude Desktop config and add:
+Edit your Claude Desktop config at:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the following configuration:
 
 ```json
 {
@@ -89,98 +141,73 @@ Edit your Claude Desktop config and add:
 
 Restart Claude Desktop after saving.
 
-## NPM Global install (optional)
-
-If you prefer a global install instead of NPX:
-
-```bash
-npm install -g @openfeature/mcp
-```
-
-Now in your MCP config use `openfeature-mcp` as the command:
-
-```json
-{
-  "mcpServers": {
-    "openfeature": {
-      "command": "openfeature-mcp"
-    }
-  }
-}
-```
-
-All logs are written to stderr. The MCP protocol messages use stdout.
-
 ## Available Tools
 
-### `install_openfeature_sdk`
+The OpenFeature MCP Server provides two main tools accessible to AI assistants:
 
-Fetches Markdown instructions for installing the OpenFeature SDK for a given
-technology. Optionally augments the prompt with installation guidance for one
-or more feature flag providers.
+### SDK Installation Guide: `install_openfeature_sdk`
 
-**Parameters:**
+Fetches installation instructions for OpenFeature SDKs in various languages and frameworks. Optionally includes provider-specific setup documentation.
 
-- `technology` (string enum): One of the supported technologies listed below
-- `providers` (string array, optional): Zero or more provider identifiers. If
-  present, adds provider-specific installation notes to the prompt (or removes
-  placeholder sections when empty).
+#### SDK Tool Parameters
 
-**Supported Technologies**:
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `technology` | string | Yes | Target language/framework (see supported list below) |
+| `providers` | string[] | No | Provider identifiers to include installation instructions |
 
-The technologies list is build from the avaliable `prompts/*.md`, updated automatically using `scripts/build-prompts.js`
+#### Supported Technologies
 
-- android
-- dotnet
-- go
-- ios
-- java
-- javascript
-- nestjs
-- nodejs
-- php
-- python
-- react
-- ruby
+The technologies list is built from the available `prompts/*.md`, updated automatically using `scripts/build-prompts.js`
 
-**Supported Providers**:
+| Technology | SDK |
+|------------|-----|
+| `android` | Android Kotlin SDK |
+| `dotnet` | .NET SDK |
+| `go` | Go SDK |
+| `ios` | iOS Swift SDK |
+| `java` | Java SDK |
+| `javascript` | JavaScript Web SDK |
+| `nestjs` | NestJS SDK |
+| `nodejs` | Node.js SDK |
+| `php` | PHP SDK |
+| `python` | Python SDK |
+| `react` | React SDK |
+| `ruby` | Ruby SDK |
 
-The provider list is sourced automatically from the OpenFeature `open-feature/openfeature.dev`
-repo; newly added providers there become available here without manual edits.
-See `scripts/build-providers.js` for details.
+#### Supported Providers
 
-### `ofrep_flag_eval`
+The provider list is automatically sourced from the OpenFeature ecosystem (`open-feature/openfeature.dev` repo).
 
-Evaluate feature flags via OpenFeature Remote Evaluation Protocol (OFREP).
-If `flag_key` is omitted, performs bulk evaluation.
+See `scripts/build-providers.js` for details on how the provider list is maintained.
 
-References:
-[`open-feature/protocol` repo](https://github.com/open-feature/protocol),
-[OFREP OpenAPI spec](https://raw.githubusercontent.com/open-feature/protocol/refs/heads/main/service/openapi.yaml)
+### OFREP Flag Evaluation: `ofrep_flag_eval`
 
-Parameters (all optional unless noted):
+Evaluate feature flags using the OpenFeature Remote Evaluation Protocol (OFREP).
+Supports both single flag and bulk evaluation.
 
-- `base_url` (string, optional): Base URL of your OFREP-compatible flag
-  service. If omitted, the server uses env/config (see below).
-- `flag_key` (string, optional): If provided, calls single flag evaluation:
-  `/ofrep/v1/evaluate/flags/{key}`. If omitted, calls bulk:
-  `/ofrep/v1/evaluate/flags`.
-- `context` (object, optional): Evaluation context, e.g. `{ "targetingKey":
-  "user-123", ... }`.
-- `etag` (string, optional): For bulk requests, sent as `If-None-Match` to
-  enable 304 caching semantics.
-- `auth` (object, optional): Inline auth for this call only.
-  - `bearer_token` (string, optional): Sets `Authorization: Bearer <token>`.
-  - `api_key` (string, optional): Sets `X-API-Key: <key>`.
+#### OFREP Tool Parameters
 
-Auth and base URL resolution (priority):
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `base_url` | string | No | Base URL of your OFREP-compatible flag service |
+| `flag_key` | string | No | Flag key for single evaluation (omit for bulk) |
+| `context` | object | No | Evaluation context (e.g., `{ targetingKey: "user-123" }`) |
+| `etag` | string | No | ETag for bulk evaluation caching |
+| `auth` | object | No | Authentication configuration |
+| `auth.bearer_token` | string | No | Bearer token for authorization |
+| `auth.api_key` | string | No | API key for authorization |
 
-1. Tool call args: `base_url`, `auth.bearer_token`, `auth.api_key`
-2. Environment variables: `OPENFEATURE_OFREP_BASE_URL` (or `OFREP_BASE_URL`),
-   `OPENFEATURE_OFREP_BEARER_TOKEN` (or `OFREP_BEARER_TOKEN`),
-   `OPENFEATURE_OFREP_API_KEY` (or `OFREP_API_KEY`)
-3. Config file: `~/.openfeature-mcp.json` (override with
-   `OPENFEATURE_MCP_CONFIG_PATH`)
+#### OFREP Configuration
+
+To use OFREP flag evaluation features, configure authentication and endpoint details. The server checks configuration in this priority order:
+
+1. **Environment Variables**
+   - `OPENFEATURE_OFREP_BASE_URL` or `OFREP_BASE_URL`
+   - `OPENFEATURE_OFREP_BEARER_TOKEN` or `OFREP_BEARER_TOKEN`
+   - `OPENFEATURE_OFREP_API_KEY` or `OFREP_API_KEY`
+
+2. **Configuration File**: `~/.openfeature-mcp.json`
 
 Example `~/.openfeature-mcp.json`:
 
@@ -188,50 +215,48 @@ Example `~/.openfeature-mcp.json`:
 {
   "OFREP": {
     "baseUrl": "https://flags.example.com",
-    "bearerToken": "<token>",
-    "apiKey": "<key>"
+    "bearerToken": "<your-token>",
+    "apiKey": "<your-api-key>"
   }
 }
 ```
 
-Notes:
+You can override the config file path using the `OPENFEATURE_MCP_CONFIG_PATH` environment variable.
 
-- Bulk requests may return `ETag`. Pass it back via `etag` to leverage 304 Not
-  Modified.
-- Either bearer token or API key can be supplied; both are supported by the
-  spec.
+> **Note**: All logs are written to stderr. The MCP protocol messages use stdout.
 
-## Development
+## MCP Usage Examples
 
-### Prerequisites
+### SDK Installation Example
 
-- Node.js 18+
+> "install the OpenFeature SDK for Node.js with the flagd provider"
 
-### Setup
+The AI will use the MCP to fetch relevant installation instructions and attempt to install the OpenFeature SDK with the correct provider.
 
-1. Install dependencies:
+### Flag Evaluation Example
 
-   ```bash
-   npm install
-   ```
+When interacting with your AI assistant:
 
-2. Add or edit install guides in the `prompts/` folder (Markdown). These are
-   bundled at build time.
+> "Can you check the value of the 'new-checkout-flow' feature flag for 'user-123'?"
 
-3. Build prompts bundle:
+The AI will use the MCP to evaluate the flag using OFREP and provide you with the result, along with additional metadata like variant and reason.
 
-   ```bash
-   npm run build-prompts
-   ```
+<!-- x-hide-in-docs-start -->
+## Resources
 
-4. Build TypeScript:
+- **NPM Package**: [@openfeature/mcp](https://www.npmjs.com/package/@openfeature/mcp)
+- **MCP Registry**: [dev.openfeature/mcp](https://registry.modelcontextprotocol.io)
+- **OpenFeature Documentation**: [openfeature.dev](https://openfeature.dev)
+- **CNCF Slack**: Join [#openfeature](https://cloud-native.slack.com/archives/C0344AANLA1)
 
-   ```bash
-   npm run build
-   ```
+## Get Involved
 
-5. Run locally (binary entrypoint):
+The OpenFeature MCP Server is an open-source project maintained by the OpenFeature community. We welcome contributions:
 
-   ```bash
-   node dist/cli.js
-   ```
+- **Report Issues**: [GitHub Issues](https://github.com/open-feature/mcp/issues)
+- **Contribute Code**: [Contributing Guide](https://github.com/open-feature/mcp/blob/main/CONTRIBUTING.md)
+- **Suggest Features**: Share ideas in the CNCF Slack [#openfeature](https://cloud-native.slack.com/archives/C0344AANLA1) channel
+- **Improve Documentation**: Help us improve SDK installation guides and examples
+
+Join the [CNCF Slack](https://communityinviter.com/apps/cloud-native/cncf) to get involved.
+<!-- x-hide-in-docs-end -->
