@@ -80,6 +80,7 @@ jobs:
     needs: [release-please, npm-release]
     runs-on: ubuntu-latest
     if: ${{ fromJSON(needs.release-please.outputs.release_created || 'false') }}
+    environment: publish
     permissions:
       id-token: write
       contents: read
