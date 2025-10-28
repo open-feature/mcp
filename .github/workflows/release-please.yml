@@ -41,8 +41,8 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          registry-url: "https://registry.npmjs.org"
-          cache: "npm"
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
 
       - name: Update npm to >=11.5.1 (for OIDC support)
         run: npm install -g npm@^11.5.1
