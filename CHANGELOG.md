@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.17](https://github.com/open-feature/mcp/compare/v0.0.16...v0.0.17) (2025-10-29)
+
+
+### 🧹 Chore
+
+* update dependencies, run format ([#40](https://github.com/open-feature/mcp/issues/40)) ([678a250](https://github.com/open-feature/mcp/commit/678a2504d31df922ba6afefd9bac2358475d3b14))
+
+
+### 📚 Documentation
+
+* add Cursor and VSCode MCP install buttons to README ([#36](https://github.com/open-feature/mcp/issues/36)) ([aef0744](https://github.com/open-feature/mcp/commit/aef074460b88b2e61a43b54c6c3599c605a6d30d))
+* add warning about AI agent non-deterministic behavior ([#39](https://github.com/open-feature/mcp/issues/39)) ([41d62a9](https://github.com/open-feature/mcp/commit/41d62a9ae6a6d9df57a018e811df1531dd3175ec))
+
 ## [0.0.16](https://github.com/open-feature/mcp/compare/v0.0.15...v0.0.16) (2025-10-27)
 
 
