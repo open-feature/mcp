@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.18](https://github.com/open-feature/mcp/compare/v0.0.17...v0.0.18) (2025-11-17)
+
+
+### 🧹 Chore
+
+* update copyright to OpenFeature Maintainers ([#41](https://github.com/open-feature/mcp/issues/41)) ([f5f6401](https://github.com/open-feature/mcp/commit/f5f64013cf156c4f22aa4fa8cd68cb6962729855))
+
 ## [0.0.17](https://github.com/open-feature/mcp/compare/v0.0.16...v0.0.17) (2025-10-29)
 
 
