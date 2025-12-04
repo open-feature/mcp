@@ -22,7 +22,7 @@ async function getAvailableTechnologies() {
       .filter((file) => file.endsWith('.md') && file !== 'README.md')
       .map((file) => file.replace('.md', ''))
       .sort();
-  } catch (error) {
+  } catch (_error) {
     console.warn('⚠️  Could not read prompts directory, using empty list');
     return [];
   }
@@ -38,7 +38,7 @@ async function readPromptFile(technology) {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
     return content;
-  } catch (error) {
+  } catch (_error) {
     console.warn(`⚠️  ${technology}: Local prompt file not found`);
     return null;
   }

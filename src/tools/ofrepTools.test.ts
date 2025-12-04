@@ -177,7 +177,11 @@ describe('ofrepTools', () => {
       );
 
       const result = await toolHandler({ flag_key: 'nonexistent-flag' });
-      const response = JSON.parse(result.content[0].text as string);
+      const contentItem = result.content[0];
+      if (contentItem.type !== 'text') {
+        throw new Error('Expected text content');
+      }
+      const response = JSON.parse(contentItem.text);
 
       expect(response.status).toBe(404);
       expect(response.error.errorCode).toBe('FLAG_NOT_FOUND');
@@ -187,7 +191,11 @@ describe('ofrepTools', () => {
       mockFetch.mockRejectedValue(new Error('Connection refused'));
 
       const result = await toolHandler({ flag_key: 'test-flag' });
-      const response = JSON.parse(result.content[0].text as string);
+      const contentItem = result.content[0];
+      if (contentItem.type !== 'text') {
+        throw new Error('Expected text content');
+      }
+      const response = JSON.parse(contentItem.text);
 
       expect(response.error).toBe('Connection refused');
     });
@@ -205,7 +213,11 @@ describe('ofrepTools', () => {
       );
 
       const result = await toolHandler({ flag_key: 'test-flag' });
-      const response = JSON.parse(result.content[0].text as string);
+      const contentItem = result.content[0];
+      if (contentItem.type !== 'text') {
+        throw new Error('Expected text content');
+      }
+      const response = JSON.parse(contentItem.text);
 
       expect(response.status).toBe(401);
       expect(response.error.error).toBe('Unauthorized');
