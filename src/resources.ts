@@ -9,6 +9,8 @@ import {
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 
+const FETCH_TIMEOUT_MS = 10 * 1000;
+
 export const DISABLE_RESOURCES =
   process.env.DISABLE_RESOURCES && (process.env.DISABLE_RESOURCES === 'true' || process.env.DISABLE_RESOURCES === '1');
 
@@ -34,10 +36,10 @@ export function registerProviderResources(server: McpServer): void {
 
   // Register a single Resource Template for provider docs: openfeature+doc://{provider}/{language}
   const template = new ResourceTemplate('openfeature+doc://{provider}/{language}', {
-    list: undefined,
+    list: async () => ({ resources: [] }),
     complete: {
-      provider: async (value: string) => PROVIDERS.filter((p) => p.toLowerCase().includes((value || '').toLowerCase())),
-      language: async (value: string) =>
+      provider: (value: string) => PROVIDERS.filter((p) => p.toLowerCase().includes((value || '').toLowerCase())),
+      language: (value: string) =>
         INSTALL_TECHNOLOGIES.filter((l) => l.toLowerCase().includes((value || '').toLowerCase())),
     },
   });
@@ -68,8 +70,10 @@ export function registerProviderResources(server: McpServer): void {
         };
       }
 
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
       try {
-        const response = await fetch(href);
+        const response = await fetch(href, { signal: controller.signal });
         if (!response.ok) {
           return {
             contents: [
@@ -104,6 +108,8 @@ export function registerProviderResources(server: McpServer): void {
             },
           ],
         };
+      } finally {
+        clearTimeout(timeout);
       }
     },
   );

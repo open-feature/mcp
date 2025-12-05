@@ -5,6 +5,8 @@ import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 
+const FETCH_TIMEOUT_MS = 30 * 1000;
+
 const OFREPArgsSchema = z.object({
   base_url: z
     .string()
@@ -111,12 +113,15 @@ async function callOFREPApi(cfg: OFREPConfig, parsed: OFREPArgs): Promise<CallTo
     context: parsed.context ?? {},
   });
 
+  console.error(`Fetching OFREP API, url: ${url}, body: ${body}`);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    console.error(`Fetching OFREP API, url: ${url}, body: ${body}`);
     const response = await fetch(url, {
       method: 'POST',
       headers,
       body,
+      signal: controller.signal,
     });
 
     const etag =
@@ -179,6 +184,8 @@ async function callOFREPApi(cfg: OFREPConfig, parsed: OFREPArgs): Promise<CallTo
     const jsonErrMsg = JSON.stringify(errMsg);
     console.error(`OFREP API error, error: ${jsonErrMsg}`);
     return { content: [{ type: 'text', text: jsonErrMsg }] };
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
