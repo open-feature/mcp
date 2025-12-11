@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.18](https://github.com/open-feature/mcp/compare/v0.0.17...v0.0.18) (2025-12-11)
+
+
+### 🐛 Bug Fixes
+
+* attempt to fix MCP server hanging with fetch timeouts and proper resource list ([#44](https://github.com/open-feature/mcp/issues/44)) ([f9181fe](https://github.com/open-feature/mcp/commit/f9181feefb06d142ac7345356e411bcff3c67fab))
+
+
+### 🧹 Chore
+
+* update copyright to OpenFeature Maintainers ([#41](https://github.com/open-feature/mcp/issues/41)) ([f5f6401](https://github.com/open-feature/mcp/commit/f5f64013cf156c4f22aa4fa8cd68cb6962729855))
+* update dependencies and migrate to ESLint v9 ([#43](https://github.com/open-feature/mcp/issues/43)) ([90ac48c](https://github.com/open-feature/mcp/commit/90ac48c9ff15cd8e2baad4ce7735ed77bedfab3b))
+
 ## [0.0.17](https://github.com/open-feature/mcp/compare/v0.0.16...v0.0.17) (2025-10-29)
 
 
