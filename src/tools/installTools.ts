@@ -25,8 +25,8 @@ function buildProviderPrompts(
       );
     }
 
-    console.error(`providerDocLinks: ${providerDocLinks}`);
-    console.error(`technology: ${technology}`);
+    console.error('providerDocLinks:', providerDocLinks);
+    console.error('technology:', technology);
     const perTechnologyUrl = providerDocLinks[technology] || '';
     if (perTechnologyUrl) {
       if (!DISABLE_RESOURCES) {

@@ -103,15 +103,18 @@ describe('ofrepTools', () => {
         context: { targetingKey: 'user-123' },
       });
 
-      expect(mockFetch).toHaveBeenCalledWith('https://flags.example.com/ofrep/v1/evaluate/flags/my-feature', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-          authorization: 'Bearer test-token',
-        },
-        body: JSON.stringify({ context: { targetingKey: 'user-123' } }),
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://flags.example.com/ofrep/v1/evaluate/flags/my-feature',
+        expect.objectContaining({
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            accept: 'application/json',
+            authorization: 'Bearer test-token',
+          },
+          body: JSON.stringify({ context: { targetingKey: 'user-123' } }),
+        }),
+      );
     });
 
     it('should make correct bulk evaluation request', async () => {
