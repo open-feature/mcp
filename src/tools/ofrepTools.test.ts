@@ -278,6 +278,7 @@ describe('ofrepTools', () => {
             'content-type': 'application/json',
             accept: 'application/json',
           },
+          body: JSON.stringify({ context: {} }),
         }),
       );
     });
