@@ -41,16 +41,12 @@ const OFREPArgsSchema = z.object({
 });
 type OFREPArgs = z.infer<typeof OFREPArgsSchema>;
 
-const OFREPConfigSchema = z
-  .object({
-    baseUrl: z.string().min(1),
-    bearerToken: z.string().optional(),
-    apiKey: z.string().optional(),
-  })
-  .refine((data) => data.bearerToken || data.apiKey, {
-    message: 'At least one of bearerToken or apiKey must be provided',
-    path: ['bearerToken'],
-  });
+// Note: Authentication is optional to support public/unauthenticated OFREP providers.
+const OFREPConfigSchema = z.object({
+  baseUrl: z.string().min(1),
+  bearerToken: z.string().optional(),
+  apiKey: z.string().optional(),
+});
 
 const ConfigFileSchema = z.object({
   OFREP: OFREPConfigSchema,
