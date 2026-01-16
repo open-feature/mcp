@@ -98,7 +98,11 @@ Alternatively, add to `.vscode/mcp.json` in your project:
   "mcpServers": {
     "OpenFeature": {
       "command": "npx",
-      "args": ["-y", "@openfeature/mcp"]
+      "args": ["-y", "@openfeature/mcp"],
+      "env": { // Optional environment variables
+        "OPENFEATURE_OFREP_BASE_URL": "<your-base-url>",
+        "OPENFEATURE_OFREP_API_KEY": "<your-api-key>"
+      }
     }
   }
 }
