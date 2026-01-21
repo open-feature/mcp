@@ -263,5 +263,24 @@ describe('ofrepTools', () => {
       await expect(toolHandler({ flag_key: 'test-flag' })).rejects.toThrow();
       expect(mockFetch).not.toHaveBeenCalled();
     });
+
+    it('should allow unauthenticated providers', async () => {
+      process.env.OPENFEATURE_OFREP_BASE_URL = 'https://public.example.com';
+      // No auth environment variables set
+
+      await toolHandler({ flag_key: 'public-flag' });
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://public.example.com/ofrep/v1/evaluate/flags/public-flag',
+        expect.objectContaining({
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            accept: 'application/json',
+          },
+          body: JSON.stringify({ context: {} }),
+        }),
+      );
+    });
   });
 });
