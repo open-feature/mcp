@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.19](https://github.com/open-feature/mcp/compare/v0.0.18...v0.0.19) (2026-01-21)
+
+
+### 🐛 Bug Fixes
+
+* Allow unauthenticated providers in OFREP configuration ([#48](https://github.com/open-feature/mcp/issues/48)) ([8584615](https://github.com/open-feature/mcp/commit/858461599ef5b7f584f4f5863d7df68f896695a1))
+
+
+### 🧹 Chore
+
+* update mcp registry docs url ([#45](https://github.com/open-feature/mcp/issues/45)) ([d41cd86](https://github.com/open-feature/mcp/commit/d41cd8604ce43174aa5edc4a3591921f1a00e605))
+
+
+### 📚 Documentation
+
+* Update README with MCP documentation and environment variables for vscode ([#49](https://github.com/open-feature/mcp/issues/49)) ([8dfa292](https://github.com/open-feature/mcp/commit/8dfa2923dd6240ddeb2db8c037ff8356a872be9c))
+
 ## [0.0.18](https://github.com/open-feature/mcp/compare/v0.0.17...v0.0.18) (2025-12-11)
 
 
