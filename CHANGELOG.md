@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.20](https://github.com/open-feature/mcp/compare/v0.0.19...v0.0.20) (2026-01-22)
+
+
+### 🐛 Bug Fixes
+
+* update MCP schema to 2025-12-11 ([#51](https://github.com/open-feature/mcp/issues/51)) ([7e06984](https://github.com/open-feature/mcp/commit/7e0698459f7e8991e355a710ee2a0c1dfaec5651))
+
 ## [0.0.19](https://github.com/open-feature/mcp/compare/v0.0.18...v0.0.19) (2026-01-21)
 
 
