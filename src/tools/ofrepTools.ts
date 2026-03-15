@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 
-const FETCH_TIMEOUT_MS = 30 * 1000;
+const DEFAULT_FETCH_TIMEOUT_MS = 30 * 1000;
 
 const OFREPArgsSchema = z.object({
   base_url: z
@@ -46,6 +46,8 @@ const OFREPConfigSchema = z.object({
   baseUrl: z.string().min(1),
   bearerToken: z.string().optional(),
   apiKey: z.string().optional(),
+  headers: z.record(z.string()).optional(),
+  timeoutMs: z.number().int().positive().optional(),
 });
 
 const ConfigFileSchema = z.object({
@@ -67,18 +69,91 @@ async function readConfigFromFile() {
   }
 }
 
+function parseTimeoutMs(value: string | undefined): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    console.error(`Invalid OFREP_TIMEOUT_MS value "${value}", falling back to default timeout.`);
+    return undefined;
+  }
+
+  return parsed;
+}
+
+function parseOFREPHeaders(value: string | undefined): Record<string, string> {
+  if (!value || value.trim().length === 0) {
+    return {};
+  }
+
+  let decoded = value;
+  try {
+    decoded = decodeURIComponent(value);
+  } catch {
+    console.error('Failed to URL-decode OFREP_HEADERS value. Falling back to raw value parsing.');
+  }
+
+  const parsedHeaders: Record<string, string> = {};
+  for (const headerPart of decoded.split(',')) {
+    const pair = headerPart.trim();
+    if (pair.length === 0) {
+      continue;
+    }
+
+    const separator = pair.indexOf('=');
+    if (separator < 0) {
+      console.error(`Skipping malformed OFREP_HEADERS entry "${pair}": missing '=' separator.`);
+      continue;
+    }
+
+    const key = pair.slice(0, separator).trim();
+    const valuePart = pair.slice(separator + 1).trim();
+
+    if (key.length === 0) {
+      console.error(`Skipping malformed OFREP_HEADERS entry "${pair}": empty header key.`);
+      continue;
+    }
+
+    if (valuePart.length === 0) {
+      console.error(`Skipping malformed OFREP_HEADERS entry "${pair}": empty header value.`);
+      continue;
+    }
+
+    parsedHeaders[key] = valuePart;
+  }
+
+  return parsedHeaders;
+}
+
+function setHeaderCaseInsensitive(headers: Record<string, string>, key: string, value: string) {
+  const keyLower = key.toLowerCase();
+  for (const existingKey of Object.keys(headers)) {
+    if (existingKey.toLowerCase() === keyLower) {
+      delete headers[existingKey];
+    }
+  }
+
+  headers[key] = value;
+}
+
 async function resolveConfig(args: OFREPArgs) {
-  const envBase = process.env.OPENFEATURE_OFREP_BASE_URL ?? process.env.OFREP_BASE_URL;
+  const envBase = process.env.OFREP_ENDPOINT ?? process.env.OPENFEATURE_OFREP_BASE_URL ?? process.env.OFREP_BASE_URL;
   const envBearer = process.env.OPENFEATURE_OFREP_BEARER_TOKEN ?? process.env.OFREP_BEARER_TOKEN;
   const envApiKey = process.env.OPENFEATURE_OFREP_API_KEY ?? process.env.OFREP_API_KEY;
+  const envHeaders = parseOFREPHeaders(process.env.OFREP_HEADERS);
+  const envTimeoutMs = parseTimeoutMs(process.env.OFREP_TIMEOUT_MS);
 
   const fileCfg = await readConfigFromFile();
 
   const baseUrl = args.base_url ?? envBase ?? fileCfg?.baseUrl;
   const bearerToken = args.auth?.bearer_token ?? envBearer ?? fileCfg?.bearerToken;
   const apiKey = args.auth?.api_key ?? envApiKey ?? fileCfg?.apiKey;
+  const headers = Object.keys(envHeaders).length > 0 ? envHeaders : fileCfg?.headers;
+  const timeoutMs = envTimeoutMs ?? fileCfg?.timeoutMs;
 
-  return OFREPConfigSchema.parse({ baseUrl, bearerToken, apiKey });
+  return OFREPConfigSchema.parse({ baseUrl, bearerToken, apiKey, headers, timeoutMs });
 }
 
 /**
@@ -97,12 +172,18 @@ async function callOFREPApi(cfg: OFREPConfig, parsed: OFREPArgs): Promise<CallTo
   };
 
   if (cfg.bearerToken) {
-    headers['authorization'] = `Bearer ${cfg.bearerToken}`;
+    setHeaderCaseInsensitive(headers, 'authorization', `Bearer ${cfg.bearerToken}`);
   } else if (cfg.apiKey) {
-    headers['X-API-Key'] = cfg.apiKey;
+    setHeaderCaseInsensitive(headers, 'X-API-Key', cfg.apiKey);
   }
   if (!isSingleFlagEval && parsed.etag) {
-    headers['If-None-Match'] = parsed.etag;
+    setHeaderCaseInsensitive(headers, 'If-None-Match', parsed.etag);
+  }
+
+  if (cfg.headers) {
+    for (const [key, value] of Object.entries(cfg.headers)) {
+      setHeaderCaseInsensitive(headers, key, value);
+    }
   }
 
   const body = JSON.stringify({
@@ -111,7 +192,8 @@ async function callOFREPApi(cfg: OFREPConfig, parsed: OFREPArgs): Promise<CallTo
 
   console.error(`Fetching OFREP API, url: ${url}, body: ${body}`);
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  const timeoutMs = cfg.timeoutMs ?? DEFAULT_FETCH_TIMEOUT_MS;
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, {
       method: 'POST',

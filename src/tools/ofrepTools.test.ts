@@ -42,10 +42,13 @@ describe('ofrepTools', () => {
     // Clear environment variables
     delete process.env.OPENFEATURE_OFREP_BASE_URL;
     delete process.env.OFREP_BASE_URL;
+    delete process.env.OFREP_ENDPOINT;
     delete process.env.OPENFEATURE_OFREP_BEARER_TOKEN;
     delete process.env.OFREP_BEARER_TOKEN;
     delete process.env.OPENFEATURE_OFREP_API_KEY;
     delete process.env.OFREP_API_KEY;
+    delete process.env.OFREP_HEADERS;
+    delete process.env.OFREP_TIMEOUT_MS;
   });
 
   afterEach(() => {
@@ -257,6 +260,109 @@ describe('ofrepTools', () => {
           }),
         }),
       );
+    });
+
+    it('should prioritize OFREP_ENDPOINT over legacy base URL env vars', async () => {
+      process.env.OPENFEATURE_OFREP_BASE_URL = 'https://legacy-openfeature.example.com';
+      process.env.OFREP_BASE_URL = 'https://legacy-ofrep.example.com';
+      process.env.OFREP_ENDPOINT = 'https://endpoint.example.com';
+
+      await toolHandler({ flag_key: 'test-flag' });
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://endpoint.example.com/ofrep/v1/evaluate/flags/test-flag',
+        expect.any(Object),
+      );
+    });
+
+    it('should parse OFREP_HEADERS and let env headers override auth/protocol headers', async () => {
+      process.env.OFREP_ENDPOINT = 'https://flags.example.com';
+      process.env.OPENFEATURE_OFREP_BEARER_TOKEN = 'token-from-env-auth';
+      process.env.OFREP_HEADERS =
+        'Authorization=Bearer%20token-from-header,accept=text/plain,X-Custom=value%3Dwith%3Dequals';
+
+      await toolHandler({ flag_key: 'test-flag' });
+
+      const [, fetchOptions] = mockFetch.mock.calls[0] as [string, { headers: Record<string, string> }];
+      const normalizedHeaders = Object.fromEntries(
+        Object.entries(fetchOptions.headers).map(([key, value]) => [key.toLowerCase(), value]),
+      );
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://flags.example.com/ofrep/v1/evaluate/flags/test-flag',
+        expect.any(Object),
+      );
+      expect(normalizedHeaders['authorization']).toBe('Bearer token-from-header');
+      expect(normalizedHeaders['accept']).toBe('text/plain');
+      expect(fetchOptions.headers['X-Custom']).toBe('value=with=equals');
+    });
+
+    it('should skip malformed OFREP_HEADERS entries', async () => {
+      process.env.OFREP_ENDPOINT = 'https://flags.example.com';
+      process.env.OFREP_HEADERS = 'X-Good=ok,missing-separator,=empty-key,empty-value=';
+
+      await toolHandler({ flag_key: 'test-flag' });
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://flags.example.com/ofrep/v1/evaluate/flags/test-flag',
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'X-Good': 'ok',
+          }),
+        }),
+      );
+
+      const [, fetchOptions] = mockFetch.mock.calls[0] as [string, { headers: Record<string, string> }];
+      expect(fetchOptions.headers['missing-separator']).toBeUndefined();
+      expect(fetchOptions.headers['']).toBeUndefined();
+      expect(fetchOptions.headers['empty-value']).toBeUndefined();
+    });
+
+    it('should let OFREP_HEADERS override If-None-Match on collisions', async () => {
+      process.env.OFREP_ENDPOINT = 'https://flags.example.com';
+      process.env.OFREP_HEADERS = 'If-None-Match=override-etag';
+
+      await toolHandler({
+        context: { targetingKey: 'user-123' },
+        etag: 'request-etag',
+      });
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://flags.example.com/ofrep/v1/evaluate/flags',
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'If-None-Match': 'override-etag',
+          }),
+        }),
+      );
+    });
+
+    it('should use OFREP_TIMEOUT_MS when valid', async () => {
+      process.env.OFREP_ENDPOINT = 'https://flags.example.com';
+      process.env.OFREP_TIMEOUT_MS = '1234';
+
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+
+      try {
+        await toolHandler({ flag_key: 'test-flag' });
+        expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1234);
+      } finally {
+        setTimeoutSpy.mockRestore();
+      }
+    });
+
+    it('should fall back to default timeout when OFREP_TIMEOUT_MS is invalid', async () => {
+      process.env.OFREP_ENDPOINT = 'https://flags.example.com';
+      process.env.OFREP_TIMEOUT_MS = 'invalid-timeout';
+
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+
+      try {
+        await toolHandler({ flag_key: 'test-flag' });
+        expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 30_000);
+      } finally {
+        setTimeoutSpy.mockRestore();
+      }
     });
 
     it('should return error when no base URL configured', async () => {
