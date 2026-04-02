@@ -279,7 +279,7 @@ describe('ofrepTools', () => {
       process.env.OFREP_ENDPOINT = 'https://flags.example.com';
       process.env.OPENFEATURE_OFREP_BEARER_TOKEN = 'token-from-env-auth';
       process.env.OFREP_HEADERS =
-        'Authorization=Bearer%20token-from-header,accept=text/plain,X-Custom=value%3Dwith%3Dequals';
+        'Authorization=Bearer%20token-from-header,accept=text/plain,X-Custom=value%3Dwith%3Dequals,X-List=one%2Ctwo%2Cthree';
 
       await toolHandler({ flag_key: 'test-flag' });
 
@@ -295,6 +295,7 @@ describe('ofrepTools', () => {
       expect(normalizedHeaders['authorization']).toBe('Bearer token-from-header');
       expect(normalizedHeaders['accept']).toBe('text/plain');
       expect(fetchOptions.headers['X-Custom']).toBe('value=with=equals');
+      expect(fetchOptions.headers['X-List']).toBe('one,two,three');
     });
 
     it('should skip malformed OFREP_HEADERS entries', async () => {

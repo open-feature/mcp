@@ -88,15 +88,8 @@ function parseOFREPHeaders(value: string | undefined): Record<string, string> {
     return {};
   }
 
-  let decoded = value;
-  try {
-    decoded = decodeURIComponent(value);
-  } catch {
-    console.error('Failed to URL-decode OFREP_HEADERS value. Falling back to raw value parsing.');
-  }
-
   const parsedHeaders: Record<string, string> = {};
-  for (const headerPart of decoded.split(',')) {
+  for (const headerPart of value.split(',')) {
     const pair = headerPart.trim();
     if (pair.length === 0) {
       continue;
@@ -108,8 +101,18 @@ function parseOFREPHeaders(value: string | undefined): Record<string, string> {
       continue;
     }
 
-    const key = pair.slice(0, separator).trim();
-    const valuePart = pair.slice(separator + 1).trim();
+    const encodedKey = pair.slice(0, separator).trim();
+    const encodedValue = pair.slice(separator + 1).trim();
+
+    let key = encodedKey;
+    let valuePart = encodedValue;
+    try {
+      key = decodeURIComponent(encodedKey).trim();
+      valuePart = decodeURIComponent(encodedValue).trim();
+    } catch {
+      console.error(`Skipping malformed OFREP_HEADERS entry "${pair}": invalid URL encoding.`);
+      continue;
+    }
 
     if (key.length === 0) {
       console.error(`Skipping malformed OFREP_HEADERS entry "${pair}": empty header key.`);
