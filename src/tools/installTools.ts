@@ -70,7 +70,7 @@ function processPromptWithProviders(
     ? `\n\n---\n\nProvider installation instructions for ${technology}:\n\n${providerPrompts.join('\n')}`
     : '';
 
-  let finalText = prompt;
+  let finalText: string;
 
   if (providers.length > 0) {
     if (providersMarkerPattern.test(prompt)) {

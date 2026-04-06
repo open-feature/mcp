@@ -46,7 +46,7 @@ const OFREPConfigSchema = z.object({
   baseUrl: z.string().min(1),
   bearerToken: z.string().optional(),
   apiKey: z.string().optional(),
-  headers: z.record(z.string()).optional(),
+  headers: z.record(z.string(), z.string()).optional(),
   timeoutMs: z.number().int().positive().optional(),
 });
 
