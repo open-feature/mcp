@@ -104,8 +104,8 @@ function parseOFREPHeaders(value: string | undefined): Record<string, string> {
     const encodedKey = pair.slice(0, separator).trim();
     const encodedValue = pair.slice(separator + 1).trim();
 
-    let key = encodedKey;
-    let valuePart = encodedValue;
+    let key: string;
+    let valuePart: string;
     try {
       key = decodeURIComponent(encodedKey).trim();
       valuePart = decodeURIComponent(encodedValue).trim();
