@@ -46,7 +46,7 @@ const OFREPConfigSchema = z.object({
   baseUrl: z.string().min(1),
   bearerToken: z.string().optional(),
   apiKey: z.string().optional(),
-  headers: z.record(z.string()).optional(),
+  headers: z.record(z.string(), z.string()).optional(),
   timeoutMs: z.number().int().positive().optional(),
 });
 
@@ -104,8 +104,8 @@ function parseOFREPHeaders(value: string | undefined): Record<string, string> {
     const encodedKey = pair.slice(0, separator).trim();
     const encodedValue = pair.slice(separator + 1).trim();
 
-    let key = encodedKey;
-    let valuePart = encodedValue;
+    let key: string;
+    let valuePart: string;
     try {
       key = decodeURIComponent(encodedKey).trim();
       valuePart = decodeURIComponent(encodedValue).trim();
