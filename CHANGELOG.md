@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.21](https://github.com/open-feature/mcp/compare/v0.0.20...v0.0.21) (2026-04-14)
+
+
+### ✨ New Features
+
+* enhance OFREP configuration with headers and timeout support ([#53](https://github.com/open-feature/mcp/issues/53)) ([e16de01](https://github.com/open-feature/mcp/commit/e16de01006b483baa97ad1410b7b3603bbca37bb))
+
+
+### 🧹 Chore
+
+* update dependencies ([#55](https://github.com/open-feature/mcp/issues/55)) ([255d165](https://github.com/open-feature/mcp/commit/255d1651d38b8621f2fbfd98739fba2e57365117))
+
 ## [0.0.20](https://github.com/open-feature/mcp/compare/v0.0.19...v0.0.20) (2026-01-22)
 
 
