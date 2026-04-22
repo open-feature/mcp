@@ -175,30 +175,26 @@ async function buildProvidersBundle() {
   console.log('🔨 Building providers bundle...');
   const result = [];
 
-  try {
-    console.log('🌐 Fetching providers from GitHub repository open-feature/openfeature.dev ...');
-    const listing = await fetchProviderDirectoryListing();
+  console.log('🌐 Fetching providers from GitHub repository open-feature/openfeature.dev ...');
+  const listing = await fetchProviderDirectoryListing();
 
-    for (const entry of listing) {
-      if (!entry.download_url) continue;
+  for (const entry of listing) {
+    if (!entry.download_url) continue;
 
-      const content = await fetchRemoteProviderFile(entry.download_url);
-      if (!content) continue;
+    const content = await fetchRemoteProviderFile(entry.download_url);
+    if (!content) continue;
 
-      const base = path.basename(entry.name, '.ts');
-      if (base === 'index') continue; // skip barrel files
+    const base = path.basename(entry.name, '.ts');
+    if (base === 'index') continue; // skip barrel files
 
-      // Build per-technology docs from href entries only
-      const docsUrlByTechnology = extractDocsUrlByTech(content);
-      if (Object.keys(docsUrlByTechnology).length === 0) {
-        console.log(`⏭️  ${base}: Skipped (no docs URLs detected)`);
-        continue;
-      }
-      result.push({ name: base, docsUrlByTechnology });
-      console.log(`✅ ${base}: Parsed (remote)`);
+    // Build per-technology docs from href entries only
+    const docsUrlByTechnology = extractDocsUrlByTech(content);
+    if (Object.keys(docsUrlByTechnology).length === 0) {
+      console.log(`⏭️  ${base}: Skipped (no docs URLs detected)`);
+      continue;
     }
-  } catch (err) {
-    console.warn('⚠️  Failed to fetch providers from GitHub:', err?.message || err);
+    result.push({ name: base, docsUrlByTechnology });
+    console.log(`✅ ${base}: Parsed (remote)`);
   }
 
   // Generate TypeScript file
@@ -213,7 +209,7 @@ async function buildProvidersBundle() {
 import { z } from 'zod';
 import { type InstallTechnology } from './promptsBundle.generated.js';
 
-export const PROVIDERS: readonly string[] = [
+export const PROVIDERS = [
 ${providersArray}
 ] as const;
 
