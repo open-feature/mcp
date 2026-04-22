@@ -45,7 +45,9 @@ jobs:
           cache: "npm"
 
       - name: Update npm to >=11.5.1 (for OIDC support)
-        run: npm install -g npm@^11.5.1
+        run: |
+          corepack enable
+          corepack prepare npm@11.12.1 --activate
 
       - name: Install dependencies
         run: npm ci
