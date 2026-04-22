@@ -34,6 +34,9 @@ jobs:
       - name: Run build
         run: npm run build
         env:
+          # build-providers.js fetches provider metadata from the GitHub API.
+          # Without authentication, parallel matrix jobs quickly exhaust the
+          # unauthenticated rate limit (60 req/h), causing the build to fail.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
