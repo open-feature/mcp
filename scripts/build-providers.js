@@ -213,7 +213,7 @@ async function buildProvidersBundle() {
 import { z } from 'zod';
 import { type InstallTechnology } from './promptsBundle.generated.js';
 
-export const PROVIDERS = [
+export const PROVIDERS: readonly string[] = [
 ${providersArray}
 ] as const;
 
