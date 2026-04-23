@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.22](https://github.com/open-feature/mcp/compare/v0.0.21...v0.0.22) (2026-04-23)
+
+
+### 🐛 Bug Fixes
+
+* use Node 24 in release workflow, add to CI matrix ([#57](https://github.com/open-feature/mcp/issues/57)) ([a547a87](https://github.com/open-feature/mcp/commit/a547a87f38b9d04f361a1bd26def700d086259c3))
+
 ## [0.0.21](https://github.com/open-feature/mcp/compare/v0.0.20...v0.0.21) (2026-04-14)
 
 
