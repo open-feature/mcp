@@ -92,15 +92,35 @@ export async function startServer(): Promise<void> {
   });
   process.on('uncaughtException', (err) => {
     console.error('Uncaught exception:', err);
+    // Always exit after an uncaught exception — process state is undefined and
+    // continuing causes a tight CPU-spinning loop when stdio peers are gone
+    // (e.g. the MCP host restarted and closed the socket).
+    process.exit(1);
   });
   process.on('unhandledRejection', (reason) => {
     console.error('Unhandled rejection:', reason);
+    process.exit(1);
+  });
+
+  // Exit cleanly when the MCP host closes the stdin pipe.  Without this the
+  // process keeps running (and spinning) after the host disconnects.
+  process.stdin.on('close', () => {
+    console.error('stdin closed. Exiting server.');
+    process.exit(0);
   });
 
   transport.onclose = () => {
     console.error('Stdio transport closed. Exiting server.');
     process.exit(0);
   };
+
+  // Exit on stdout errors (e.g. EPIPE when the host closes its read end).
+  // StdioServerTransport only guards stdin; stdout errors become uncaught
+  // exceptions without this listener, triggering the CPU-spin loop.
+  process.stdout.on('error', (err) => {
+    console.error('stdout error:', err);
+    process.exit(1);
+  });
 
   await server.connect(transport);
   console.error('✅ OpenFeature MCP Server (stdio) started');
