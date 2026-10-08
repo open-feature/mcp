@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.23](https://github.com/open-feature/mcp/compare/v0.0.22...v0.0.23) (2026-10-08)
+
+
+### 🧹 Chore
+
+* **deps:** update actions/checkout action to v5.1.0 ([#62](https://github.com/open-feature/mcp/issues/62)) ([7c70cad](https://github.com/open-feature/mcp/commit/7c70cade612f7f7bfcafc7bb9804a9daabb4ca9e))
+* **deps:** update amannn/action-semantic-pull-request action to v6.1.1 ([#63](https://github.com/open-feature/mcp/issues/63)) ([5735302](https://github.com/open-feature/mcp/commit/5735302caf4d688571e93a0412f3d41952e25209))
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.30.0 ([#64](https://github.com/open-feature/mcp/issues/64)) ([bdb173b](https://github.com/open-feature/mcp/commit/bdb173be59614afe53f4570630bbd89661b52b8a))
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.30.1 ([#70](https://github.com/open-feature/mcp/issues/70)) ([f9a39c6](https://github.com/open-feature/mcp/commit/f9a39c6937d65f373a60dd66a43014cf06bc4cfa))
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.31.0 ([#71](https://github.com/open-feature/mcp/issues/71)) ([c980925](https://github.com/open-feature/mcp/commit/c9809252dbaaa58917231ffc4a18dddc0a8cfe2a))
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.32.1 ([#72](https://github.com/open-feature/mcp/issues/72)) ([a887b89](https://github.com/open-feature/mcp/commit/a887b895b8bc9e21c32115cefc9ec368bf6e0e6b))
+* **deps:** update dependency zod to v4.6.5 ([#65](https://github.com/open-feature/mcp/issues/65)) ([f44a40c](https://github.com/open-feature/mcp/commit/f44a40cc635efad8a4c919efbb06ac6c2dab6ce8))
+* **deps:** update marocchino/sticky-pull-request-comment action to v2.9.4 ([#67](https://github.com/open-feature/mcp/issues/67)) ([73791a3](https://github.com/open-feature/mcp/commit/73791a3ee9dc49f3351f22534b2910748e7a86be))
+
 ## [0.0.22](https://github.com/open-feature/mcp/compare/v0.0.21...v0.0.22) (2026-05-12)
 
 
