@@ -1,0 +1,12 @@
+{
+  "name": "openfeature",
+  "description": "OpenFeature SDK installation guides for multiple languages and frameworks, with provider documentation for 35+ feature flag vendors.",
+  "version": "1.0.0",
+  "author": {
+    "name": "OpenFeature",
+    "url": "https://openfeature.dev"
+  },
+  "repository": "https://github.com/open-feature/mcp",
+  "homepage": "https://openfeature.dev",
+  "license": "Apache-2.0"
+}

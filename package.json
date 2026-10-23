@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "build": "npm run build-providers && npm run build-prompts && tsc",
+    "build": "npm run build-providers && npm run build-prompts && tsc && npm run build-skills",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -17,6 +17,7 @@
     "start": "node dist/cli.js",
     "build-prompts": "node scripts/build-prompts.js",
     "build-providers": "node scripts/build-providers.js",
+    "build-skills": "node scripts/build-skills.js",
     "prepack": "npm run build",
     "test": "vitest run"
   },
